@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ambroh – Prêt rapide au Tchad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbf4f4;--card:#fff;--ink:#1a1a1f;--mute:#6b6168;--line:#ead9d9;--blue:#d93a34;--deep:#b02a25;--tint:#fce9e8;--sun:#f2b632;--on-blue:#fff;--ok:#1d7a4d;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17120f;--card:#221a1a;--ink:#f6eeee;--mute:#b5a6a6;--line:#3b2c2c;--blue:#ff5f59;--deep:#d93a34;--tint:#3a1f1f;--sun:#f2b632;--on-blue:#1a1a1f;--ok:#5fd39b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17120f;--card:#221a1a;--ink:#f6eeee;--mute:#b5a6a6;--line:#3b2c2c;--blue:#ff5f59;--deep:#d93a34;--tint:#3a1f1f;--sun:#f2b632;--on-blue:#1a1a1f;--ok:#5fd39b;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Bricolage Grotesque',system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.5}
+.wrap{max-width:560px;margin:0 auto;padding:20px 20px 40px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+.brand{font-weight:800;font-size:22px;letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
+.mark{width:30px;height:30px;border-radius:9px;background:var(--blue);color:var(--on-blue);display:grid;place-items:center;font-size:17px}
+.lang{display:flex;border:1px solid var(--line);border-radius:99px;overflow:hidden}
+.lang button{border:0;background:none;color:var(--mute);font:600 13px inherit;font-family:inherit;padding:7px 14px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--blue);color:var(--on-blue)}
+h1{font-size:clamp(30px,8vw,42px);line-height:1.05;letter-spacing:-.03em;font-weight:800;margin:0 0 10px}
+.sub{color:var(--mute);margin:0 0 26px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.row label{font-weight:600}
+.row output{font-weight:800;font-size:18px}
+input[type=range]{width:100%;accent-color:var(--blue);margin:6px 0 4px;height:28px}
+.ends{display:flex;justify-content:space-between;color:var(--mute);font-size:12px;margin-bottom:20px}
+.result{background:var(--blue);color:var(--on-blue);border-radius:14px;padding:20px;margin-top:6px}
+.result small{opacity:.8;display:block}
+.pay{font-size:clamp(38px,11vw,54px);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin:2px 0 10px}
+.pay span{font-size:.4em;font-weight:600;margin-left:6px;opacity:.85}
+.tot{display:flex;justify-content:space-between;font-size:14px;border-top:1px solid color-mix(in srgb,var(--on-blue) 25%,transparent);padding-top:10px}
+.cta{width:100%;margin-top:16px;border:0;border-radius:12px;background:var(--sun);color:#1a1a1f;font:800 16px inherit;font-family:inherit;padding:16px;cursor:pointer}
+.cta:hover{filter:brightness(1.05)}
+.perk .ic{background:var(--tint);border-radius:10px;padding:6px 8px}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+form{display:none;margin-top:18px;gap:12px;flex-direction:column}
+form.open{display:flex}
+form label{font-weight:600;font-size:14px}
+form input{width:100%;padding:13px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit;margin-top:4px}
+.done{display:none;margin-top:18px;padding:16px;border-radius:12px;border:1px solid var(--ok);color:var(--ok);font-weight:600}
+.done.show{display:block}
+.perks{display:grid;gap:12px;margin-top:22px}
+.perk{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.perk b{display:block}
+.perk span.t{color:var(--mute);font-size:14px}
+.ic{font-size:22px}
+footer{margin-top:28px;color:var(--mute);font-size:12px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><span class="mark">A</span>Ambroh</div>
+    <div class="lang" role="group" aria-label="Langue">
+      <button id="fr" aria-pressed="true">FR</button><button id="en" aria-pressed="false">EN</button>
+    </div>
+  </header>
+
+  <h1 data-k="h1"></h1>
+  <p class="sub" data-k="sub"></p>
+
+  <section class="card" aria-labelledby="calc">
+    <div class="row"><label for="amt" id="calc" data-k="amount"></label><output id="amtO"></output></div>
+    <input id="amt" type="range" min="50000" max="5000000" step="10000" value="500000">
+    <div class="ends"><span>50 000</span><span>5 000 000 FCFA</span></div>
+
+    <div class="row"><label for="dur" data-k="term"></label><output id="durO"></output></div>
+    <input id="dur" type="range" min="6" max="60" step="1" value="12">
+    <div class="ends"><span id="e1"></span><span id="e2"></span></div>
+
+    <div class="result" aria-live="polite">
+      <small data-k="monthly"></small>
+      <div class="pay"><span id="pay" style="margin:0;font-size:inherit;font-weight:inherit;opacity:1"></span><span>FCFA</span></div>
+      <div class="tot"><span data-k="total"></span><b id="tot"></b></div>
+    </div>
+
+    <button class="cta" id="apply" data-k="apply"></button>
+
+    <form id="form">
+      <label><span data-k="name"></span><input id="nm" required autocomplete="name"></label>
+      <label><span data-k="phone"></span><input id="ph" type="tel" required autocomplete="tel" placeholder="+235 …"></label>
+      <button class="cta" type="submit" style="margin-top:4px" data-k="send"></button>
+    </form>
+    <div class="done" id="done" role="status"></div>
+  </section>
+
+  <div class="perks">
+    <div class="perk"><span class="ic">⚡</span><div><b data-k="p1"></b><span class="t" data-k="p1t"></span></div></div>
+    <div class="perk"><span class="ic">📉</span><div><b data-k="p2"></b><span class="t" data-k="p2t"></span></div></div>
+    <div class="perk"><span class="ic">🔒</span><div><b data-k="p3"></b><span class="t" data-k="p3t"></span></div></div>
+  </div>
+  <footer data-k="foot"></footer>
+</div>
+
+<script>
+var T={
+ fr:{h1:"Obtenez votre prêt rapidement",sub:"Approbation rapide, taux compétitifs, durées flexibles.",amount:"Montant du prêt",term:"Durée du prêt",monthly:"Paiement mensuel",total:"Total à rembourser",apply:"Demander maintenant",name:"Nom complet",phone:"Numéro de téléphone",send:"Envoyer ma demande",p1:"Approbation rapide",p1t:"Réponse sous 24 heures",p2:"Taux bas",p2t:"À partir de 12 % par an",p3:"Sécurisé",p3t:"Vos données restent protégées",foot:"© 2026 Ambroh. Tous droits réservés. Simulation indicative, non contractuelle.",mo:" mois",done:function(n){return "Merci "+n+", votre demande est enregistrée sur cet appareil. (Démo : aucune donnée n’est envoyée.)"},loc:"fr-FR"},
+ en:{h1:"Get your loan quickly",sub:"Fast approval, competitive rates, flexible terms.",amount:"Loan amount",term:"Loan term",monthly:"Monthly payment",total:"Total to repay",apply:"Apply now",name:"Full name",phone:"Phone number",send:"Send my application",p1:"Fast approval",p1t:"Answer within 24 hours",p2:"Low rates",p2t:"From 12% per year",p3:"Secure",p3t:"Your data stays protected",foot:"© 2026 Ambroh. All rights reserved. Indicative simulation, not a contract.",mo:" months",done:function(n){return "Thank you "+n+", your request is saved on this device. (Demo: no data is sent.)"},loc:"en-US"}
+};
+var L="fr",$=function(i){return document.getElementById(i)};
+function fmt(n){return new Intl.NumberFormat(T[L].loc,{maximumFractionDigits:0}).format(n)}
+function calc(){
+ var P=+$("amt").value,n=+$("dur").value,r=0.12/12;
+ var m=P*r/(1-Math.pow(1+r,-n));
+ $("amtO").textContent=fmt(P)+" FCFA";
+ $("durO").textContent=n+T[L].mo;
+ $("pay").textContent=fmt(Math.round(m));
+ $("tot").textContent=fmt(Math.round(m*n))+" FCFA";
+ $("e1").textContent="6"+T[L].mo;$("e2").textContent="60"+T[L].mo;
+}
+function render(){
+ document.documentElement.lang=L;
+ document.querySelectorAll("[data-k]").forEach(function(e){var v=T[L][e.dataset.k];if(typeof v==="string")e.textContent=v});
+ $("fr").setAttribute("aria-pressed",L==="fr");$("en").setAttribute("aria-pressed",L==="en");
+ $("done").classList.remove("show");
+ calc();
+}
+$("amt").oninput=calc;$("dur").oninput=calc;
+$("fr").onclick=function(){L="fr";render()};
+$("en").onclick=function(){L="en";render()};
+$("apply").onclick=function(){$("form").classList.add("open");$("nm").focus()};
+$("form").onsubmit=function(e){
+ e.preventDefault();
+ $("done").textContent=T[L].done($("nm").value.trim());
+ $("done").classList.add("show");
+ $("form").classList.remove("open");$("form").reset();
+};
+render();
+</script>
+</body>
+</html>
